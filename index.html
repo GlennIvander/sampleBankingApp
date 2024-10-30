@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking App</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Banking App</h1>
+
+    <nav>
+        <button onclick="showSection('viewUsers')">View Users</button>
+        <button onclick="showSection('createUser')">Create User</button>
+        <button onclick="showSection('transactions')">Transactions</button>
+        <button onclick="showSection('expenses')">Expenses</button>
+    </nav>
+
+    <!-- View Users Section -->
+    <div id="viewUsers" class="section visible">
+        <h2>All Users</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Balance</th>
+                </tr>
+            </thead>
+            <tbody id="usersList">
+                <!-- Users will be dynamically added here -->
+            </tbody>
+        </table>
+        <button onclick="loadInitialData()">Load Initial Data</button>
+    </div>
+
+    <!-- Create User Section -->
+    <div id="createUser" class="section">
+        <h2>Create User</h2>
+        <input type="text" id="name" placeholder="Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="createUser()">Create User</button>
+    </div>
+
+    <!-- Transactions Section -->
+    <div id="transactions" class="section">
+        <h2>Transactions</h2>
+
+        <h3>Deposit</h3>
+        <select id="depositUserDropdown"></select>
+        <input type="number" id="depositAmount" placeholder="Amount">
+        <button onclick="deposit()">Deposit</button>
+
+        <h3>Withdraw</h3>
+        <select id="withdrawUserDropdown"></select>
+        <input type="number" id="withdrawAmount" placeholder="Amount">
+        <button onclick="withdraw()">Withdraw</button>
+
+        <h3>Transfer</h3>
+        <select id="senderDropdown"></select>
+        <select id="receiverDropdown"></select>
+        <input type="number" id="transferAmount" placeholder="Amount">
+        <button onclick="transfer()">Transfer</button>
+    </div>
+
+    <!-- Expenses Section -->
+    <div id="expenses" class="section">
+        <h2>Expense Tracker</h2>
+        <select id="expenseUserDropdown"></select>
+        <input type="text" id="expenseItem" placeholder="Item">
+        <input type="number" id="expenseAmount" placeholder="Amount">
+        <button onclick="addExpense()">Add Expense</button>
+
+        <h3>Your Expenses</h3>
+        <div id="expenseList">
+            <ul id="expensesList"></ul>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
