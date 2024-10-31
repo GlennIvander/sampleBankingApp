@@ -12,10 +12,17 @@ function showSection(sectionId) {
 
 // Load initial data
 function loadInitialData() {
-    users = [
+    const initialUsers = [
         { name: 'Alice', email: 'alice@example.com', balance: 500, expenses: [] },
         { name: 'Bob', email: 'bob@example.com', balance: 300, expenses: [] }
     ];
+
+    initialUsers.forEach(initialUser => {
+        if (!users.some(user => user.email.toLowerCase() === initialUser.email.toLowerCase())) {
+            users.push(initialUser);
+        }
+    });
+
     localStorage.setItem('users', JSON.stringify(users));
     displayUsers();
     updateDropdowns();
@@ -31,132 +38,84 @@ function displayUsers() {
                 <td>${user.name}</td>
                 <td>${user.email}</td>
                 <td>${user.balance}</td>
+                <td><button onclick="loadUserForEdit('${user.email}')">Edit</button></td>
+                <td><button onclick="deactivateUser('${user.email}')">Deactivate</button></td>
             </tr>
         `;
     });
+    updateDropdowns();
 }
 
-// Create a new user
+// Load user for editing
+function loadUserForEdit(email) {
+    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (user) {
+        document.getElementById('editUserDropdown').innerHTML = `<option value="${user.email}">${user.name} (${user.email})</option>`;
+        document.getElementById('editName').value = user.name;
+        document.getElementById('editEmail').value = user.email;
+    }
+}
+
+// Create User
 function createUser() {
-    let name = document.getElementById('name').value;
-    let email = document.getElementById('email').value;
-    let password = document.getElementById('password').value;
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-    if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
-        alert('User already exists');
-        return;
-    }
     if (!name || !email || !password) {
-        alert('All fields are required');
+        showNotification('Please fill in all fields.');
         return;
     }
 
-    users.push({ name, email, balance: 0, expenses: [] });
+    if (users.some(user => user.email.toLowerCase() === email.toLowerCase())) {
+        showNotification('Email already exists.');
+        return;
+    }
+
+    const newUser = {
+        name: name,
+        email: email,
+        balance: 0, // Assuming new users start with a balance of 0
+        expenses: []
+    };
+
+    users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
     displayUsers();
-    updateDropdowns();  // Update the dropdown with the new user
+    showNotification('User created successfully!');
+    clearCreateUserForm(); // Optional: Function to reset the form fields
 }
 
-// Update dropdowns with user list
-function updateDropdowns() {
-    const depositUserDropdown = document.getElementById('depositUserDropdown');
-    const withdrawUserDropdown = document.getElementById('withdrawUserDropdown');
-    const senderDropdown = document.getElementById('senderDropdown');
-    const receiverDropdown = document.getElementById('receiverDropdown');
-    const expenseUserDropdown = document.getElementById('expenseUserDropdown');
-
-    // Clear existing options
-    depositUserDropdown.innerHTML = '';
-    withdrawUserDropdown.innerHTML = '';
-    senderDropdown.innerHTML = '';
-    receiverDropdown.innerHTML = '';
-    expenseUserDropdown.innerHTML = '';
-
-    // Populate dropdowns with users
-    users.forEach(user => {
-        let option = `<option value="${user.email}">${user.name} (${user.email})</option>`;
-        depositUserDropdown.innerHTML += option;
-        withdrawUserDropdown.innerHTML += option;
-        senderDropdown.innerHTML += option;
-        receiverDropdown.innerHTML += option;
-        expenseUserDropdown.innerHTML += option;
-    });
+function clearCreateUserForm() {
+    document.getElementById('name').value = '';
+    document.getElementById('email').value = '';
+    document.getElementById('password').value = '';
 }
 
-// Deposit money
-function deposit() {
-    let email = document.getElementById('depositUserDropdown').value;
-    let amount = parseFloat(document.getElementById('depositAmount').value);
-    
+// Edit user details
+function editUser() {
+    const email = document.getElementById('editUserDropdown').value;
+    const newName = document.getElementById('editName').value;
+    const newEmail = document.getElementById('editEmail').value;
+
     let user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-    if (!user) {
-        alert('User does not exist');
-        return;
-    }
-    if (amount <= 0) {
-        alert('Amount must be positive');
-        return;
-    }
+    if (user) {
+        user.name = newName || user.name;
+        user.email = newEmail || user.email;
 
-    user.balance += amount;
-    localStorage.setItem('users', JSON.stringify(users));
-    displayUsers();
+        // Update local storage and UI
+        localStorage.setItem('users', JSON.stringify(users));
+        displayUsers();
+        showNotification('User details updated successfully!');
+    }
 }
 
-// Withdraw money
-function withdraw() {
-    let email = document.getElementById('withdrawUserDropdown').value;
-    let amount = parseFloat(document.getElementById('withdrawAmount').value);
-    
-    let user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
-    if (!user) {
-        alert('User does not exist');
-        return;
-    }
-    if (amount <= 0) {
-        alert('Amount must be positive');
-        return;
-    }
-    if (user.balance < amount) {
-        alert('Not enough money');
-        return;
-    }
-
-    user.balance -= amount;
+// Deactivate user
+function deactivateUser(email) {
+    users = users.filter(u => u.email.toLowerCase() !== email.toLowerCase());
     localStorage.setItem('users', JSON.stringify(users));
     displayUsers();
-}
-
-// Transfer money
-function transfer() {
-    let senderEmail = document.getElementById('senderDropdown').value;
-    let receiverEmail = document.getElementById('receiverDropdown').value;
-    let amount = parseFloat(document.getElementById('transferAmount').value);
-
-    let sender = users.find(u => u.email.toLowerCase() === senderEmail.toLowerCase());
-    let receiver = users.find(u => u.email.toLowerCase() === receiverEmail.toLowerCase());
-
-    if (!sender) {
-        alert('Sender does not exist');
-        return;
-    }
-    if (!receiver) {
-        alert('Receiver does not exist');
-        return;
-    }
-    if (amount <= 0) {
-        alert('Amount must be positive');
-        return;
-    }
-    if (sender.balance < amount) {
-        alert('Not enough money');
-        return;
-    }
-
-    sender.balance -= amount;
-    receiver.balance += amount;
-    localStorage.setItem('users', JSON.stringify(users));
-    displayUsers();
+    showNotification('User deactivated successfully!');
 }
 
 // Add expense
@@ -167,11 +126,17 @@ function addExpense() {
 
     let user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
     if (!user) {
-        alert('User does not exist');
+        showNotification('User does not exist');
         return;
     }
     if (!item || amount <= 0) {
-        alert('Invalid expense');
+        showNotification('Invalid expense');
+        return;
+    }
+    
+    // Check if balance is sufficient
+    if (user.balance < amount) {
+        showNotification('Insufficient funds for this expense.');
         return;
     }
 
@@ -186,7 +151,136 @@ function addExpense() {
 function listExpenses(user) {
     let expensesList = document.getElementById('expensesList');
     expensesList.innerHTML = '';
-    user.expenses.forEach(exp => {
-        expensesList.innerHTML += `<li>${exp.item}: $${exp.amount}</li>`;
+    user.expenses.forEach((exp, index) => {
+        expensesList.innerHTML += `<li>${exp.item}: $${exp.amount} <button onclick="deleteExpense('${user.email}', ${index})">Delete</button></li>`;
+    });
+}
+
+// Delete expense
+function deleteExpense(userEmail, index) {
+    let user = users.find(u => u.email.toLowerCase() === userEmail.toLowerCase());
+    if (user && user.expenses.length > index) {
+        user.expenses.splice(index, 1);
+        localStorage.setItem('users', JSON.stringify(users));
+        listExpenses(user);
+        showNotification('Expense deleted successfully!');
+    }
+}
+
+// Deposit
+function deposit() {
+    const email = document.getElementById('depositUserDropdown').value;
+    const amount = parseFloat(document.getElementById('depositAmount').value);
+
+    let user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (!user) {
+        showNotification('User does not exist');
+        return;
+    }
+    if (amount <= 0) {
+        showNotification('Invalid deposit amount');
+        return;
+    }
+
+    user.balance += amount; // Add amount to user balance
+    localStorage.setItem('users', JSON.stringify(users));
+    displayUsers(); // Refresh user display
+    showNotification(`Deposited $${amount} to ${user.name}'s account.`);
+}
+
+// Withdraw
+function withdraw() {
+    const email = document.getElementById('withdrawUserDropdown').value;
+    const amount = parseFloat(document.getElementById('withdrawAmount').value);
+
+    let user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (!user) {
+        showNotification('User does not exist');
+        return;
+    }
+    if (amount <= 0) {
+        showNotification('Invalid withdrawal amount');
+        return;
+    }
+    if (user.balance < amount) {
+        showNotification('Insufficient balance for this withdrawal.');
+        return;
+    }
+
+    user.balance -= amount; // Deduct amount from user balance
+    localStorage.setItem('users', JSON.stringify(users));
+    displayUsers(); // Refresh user display
+    showNotification(`Withdrew $${amount} from ${user.name}'s account.`);
+}
+
+// Transfer
+function transfer() {
+    const senderEmail = document.getElementById('senderDropdown').value;
+    const receiverEmail = document.getElementById('receiverDropdown').value;
+    const amount = parseFloat(document.getElementById('transferAmount').value);
+
+    let sender = users.find(u => u.email.toLowerCase() === senderEmail.toLowerCase());
+    let receiver = users.find(u => u.email.toLowerCase() === receiverEmail.toLowerCase());
+    if (!sender) {
+        showNotification('Sender does not exist');
+        return;
+    }
+    if (!receiver) {
+        showNotification('Receiver does not exist');
+        return;
+    }
+    if (amount <= 0) {
+        showNotification('Invalid transfer amount');
+        return;
+    }
+    if (sender.balance < amount) {
+        showNotification('Insufficient balance for this transfer.');
+        return;
+    }
+
+    sender.balance -= amount; // Deduct from sender
+    receiver.balance += amount; // Add to receiver
+    localStorage.setItem('users', JSON.stringify(users));
+    displayUsers(); // Refresh user display
+    showNotification(`Transferred $${amount} from ${sender.name} to ${receiver.name}.`);
+}
+
+// Show notification
+function showNotification(message) {
+    const notification = document.createElement('div');
+    notification.innerText = message;
+    notification.className = 'notification';
+    document.body.appendChild(notification);
+    setTimeout(() => {
+        notification.remove();
+    }, 3000); // Remove notification after 3 seconds
+}
+
+// Update dropdowns with user list
+function updateDropdowns() {
+    const depositUserDropdown = document.getElementById('depositUserDropdown');
+    const withdrawUserDropdown = document.getElementById('withdrawUserDropdown');
+    const senderDropdown = document.getElementById('senderDropdown');
+    const receiverDropdown = document.getElementById('receiverDropdown');
+    const expenseUserDropdown = document.getElementById('expenseUserDropdown');
+    const editUserDropdown = document.getElementById('editUserDropdown');
+
+    // Clear existing options
+    depositUserDropdown.innerHTML = '';
+    withdrawUserDropdown.innerHTML = '';
+    senderDropdown.innerHTML = '';
+    receiverDropdown.innerHTML = '';
+    expenseUserDropdown.innerHTML = '';
+    editUserDropdown.innerHTML = '';
+
+    // Populate dropdowns with users
+    users.forEach(user => {
+        let option = `<option value="${user.email}">${user.name} (${user.email})</option>`;
+        depositUserDropdown.innerHTML += option;
+        withdrawUserDropdown.innerHTML += option;
+        senderDropdown.innerHTML += option;
+        receiverDropdown.innerHTML += option;
+        expenseUserDropdown.innerHTML += option;
+        editUserDropdown.innerHTML += option;
     });
 }
