@@ -8,12 +8,11 @@
 </head>
 <body>
 
-    <h1>SapphireBank</h1>
+    <h1>Banking App</h1>
 
     <nav>
         <button onclick="showSection('viewUsers')">View Users</button>
         <button onclick="showSection('createUser')">Create User</button>
-        <button onclick="showSection('editUser')">Edit User</button>
         <button onclick="showSection('transactions')">Transactions</button>
         <button onclick="showSection('expenses')">Expenses</button>
     </nav>
@@ -44,16 +43,7 @@
         <input type="text" id="name" placeholder="Name" required>
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required>
-        <button id="createUserButton" onclick="createUser()">Create User</button>
-    </div>
-
-    <!-- Edit User Section -->
-    <div id="editUser" class="section">
-        <h2>Edit User</h2>
-        <select id="editUserDropdown"></select>
-        <input type="text" id="editName" placeholder="New Name">
-        <input type="email" id="editEmail" placeholder="New Email">
-        <button onclick="editUser()">Edit User</button>
+        <button onclick="createUser()">Create User</button>
     </div>
 
     <!-- Transactions Section -->
@@ -90,8 +80,6 @@
             <ul id="expensesList"></ul>
         </div>
     </div>
-
-    <div id="notificationContainer"></div>
 
     <script src="script.js"></script>
 </body>
