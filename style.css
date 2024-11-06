@@ -138,3 +138,13 @@ tr:hover {
     border-radius: 5px;
     z-index: 1000;
 }
+
+@media (max-width: 768px) {
+  nav {
+      flex-wrap: wrap;
+  }
+  .section {
+      width: 100%;
+  }
+}
+

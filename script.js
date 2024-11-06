@@ -38,7 +38,6 @@ function displayUsers() {
                 <td>${user.name}</td>
                 <td>${user.email}</td>
                 <td>${user.balance}</td>
-                <td><button onclick="loadUserForEdit('${user.email}')">Edit</button></td>
                 <td><button onclick="deactivateUser('${user.email}')">Deactivate</button></td>
             </tr>
         `;
@@ -62,8 +61,8 @@ function createUser() {
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    if (!name || !email || !password) {
-        showNotification('Please fill in all fields.');
+    if (!name.trim() || !email.trim() || !password.trim()) {
+        showNotification('All fields must be filled.');
         return;
     }
 
@@ -118,6 +117,7 @@ function deactivateUser(email) {
     showNotification('User deactivated successfully!');
 }
 
+
 // Add expense
 function addExpense() {
     let email = document.getElementById('expenseUserDropdown').value;
@@ -152,7 +152,7 @@ function listExpenses(user) {
     let expensesList = document.getElementById('expensesList');
     expensesList.innerHTML = '';
     user.expenses.forEach((exp, index) => {
-        expensesList.innerHTML += `<li>${exp.item}: $${exp.amount} <button onclick="deleteExpense('${user.email}', ${index})">Delete</button></li>`;
+        expensesList.innerHTML += `<li>${exp.item}: PHP${exp.amount} <button onclick="deleteExpense('${user.email}', ${index})">Delete</button></li>`;
     });
 }
 
@@ -185,7 +185,7 @@ function deposit() {
     user.balance += amount; // Add amount to user balance
     localStorage.setItem('users', JSON.stringify(users));
     displayUsers(); // Refresh user display
-    showNotification(`Deposited $${amount} to ${user.name}'s account.`);
+    showNotification(`Deposited PHP${amount} to ${user.name}'s account.`);
 }
 
 // Withdraw
@@ -210,7 +210,7 @@ function withdraw() {
     user.balance -= amount; // Deduct amount from user balance
     localStorage.setItem('users', JSON.stringify(users));
     displayUsers(); // Refresh user display
-    showNotification(`Withdrew $${amount} from ${user.name}'s account.`);
+    showNotification(`Withdrew PHP${amount} from ${user.name}'s account.`);
 }
 
 // Transfer
@@ -242,7 +242,7 @@ function transfer() {
     receiver.balance += amount; // Add to receiver
     localStorage.setItem('users', JSON.stringify(users));
     displayUsers(); // Refresh user display
-    showNotification(`Transferred $${amount} from ${sender.name} to ${receiver.name}.`);
+    showNotification(`Transferred PHP${amount} from ${sender.name} to ${receiver.name}.`);
 }
 
 // Show notification
