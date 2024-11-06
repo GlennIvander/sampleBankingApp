@@ -17,6 +17,7 @@ body {
     border: 0.15rem solid var(--mainGreen);
     padding: 1rem;
     border-radius: 0.25rem;
+    display: none;
 }
 
 h3 {
@@ -24,6 +25,12 @@ h3 {
     font-weight: bold;
     font-size: 2.5rem;
 }
+
+#toggle-budget-form {
+    display: block;
+    margin: 0 auto;
+}
+
 .expense-form {
     border: 0.15rem solid var(--mainRed);
     padding: 1rem;

@@ -15,93 +15,69 @@
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
  <!-- Chart.js -->
  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
- <title>budget app</title>
+ <title>Budget App</title>
 </head>
 
 <body>
- <div class="container-fluid">
-  <div class="row">
-   <div class="col-11 mx-auto pt-3">
-    <!-- title -->
-    <h3 class="text-uppercase mb-4">budget app</h3>
+ <div class="container">
+  <!-- title -->
+  <h3 class="text-uppercase mb-4">Budget App</h3>
 
-    <!-- app info -->
-    <div class="row mb-4">
-     <div class="col-4 text-center mb-2">
-      <h6 class="text-uppercase info-title">budget</h6>
-      <span class="budget-icon"><i class="fa-solid fa-piggy-bank"></i></span>
-      <h4 class="text-uppercase mt-2 budget" id="budget"><span>$ </span><span id="budget-amount">0</span></h4>
-     </div>
-     <div class="col-4 text-center">
-      <h6 class="text-uppercase info-title">expenses</h6>
-      <span class="expense-icon"><i class="fa-solid fa-money-bill-wave"></i></span>
-      <h4 class="text-uppercase mt-2 expense" id="expense"><span>$ </span><span id="expense-amount">0</span></h4>
-     </div>
-     <div class="col-4 text-center">
-      <h6 class="text-uppercase info-title">balance</h6>
-      <span class="balance-icon"><i class="fa-solid fa-peso-sign"></i></span>
-      <h4 class="text-uppercase mt-2 balance" id="balance"><span>$ </span><span id="balance-amount">0</span></h4>
-     </div>
-    </div>
+  <!-- Budget Form -->
+  <button id="toggle-budget-form" class="btn btn-primary mb-3">My Budget</button>
+  <div class="budget-feedback alert alert-danger text-capitalize">budget feedback</div>
+  <form id="budget-form" class="budget-form mb-4">
+   <h5 class="text-capitalize">Budget</h5>
+   <div class="form-group">
+    <input type="number" class="form-control budget-input" id="budget-input">
+   </div>
+   <button type="submit" class="btn text-capitalize budget-submit mt-2" id="budget-submit">Add</button>
+  </form>
 
-    <div class="row">
-     <div class="col-md-5 my-3">
-      <!-- budget feedback -->
-      <div class="budget-feedback alert alert-danger text-capitalize">budget feedback</div>
-      <!-- budget form -->
-      <form id="budget-form" class="budget-form">
-       <h5>Budget Amount</h5>
-       <div class="form-group">
-        <input type="number" class="form-control budget-input" id="budget-input">
-       </div>
-       <br />
-       <!-- submit button -->
-       <button type="submit" class="btn text-capitalize budget-submit" id="budget-submit">calculate</button>
-      </form>
-     </div>
+  <!-- App Info (Three Columns) -->
+  <div class="row text-center mb-4">
+   <div class="col-md-4">
+    <h6 class="text-uppercase info-title">Budget</h6>
+    <span class="budget-icon"><i class="fa-solid fa-piggy-bank"></i></span>
+    <h4 class="text-uppercase mt-2 budget" id="budget"><span>$ </span><span id="budget-amount">0</span></h4>
+   </div>
+   <div class="col-md-4">
+    <h6 class="text-uppercase info-title">Expenses</h6>
+    <span class="expense-icon"><i class="fa-solid fa-money-bill-wave"></i></span>
+    <h4 class="text-uppercase mt-2 expense" id="expense"><span>$ </span><span id="expense-amount">0</span></h4>
+   </div>
+   <div class="col-md-4">
+    <h6 class="text-uppercase info-title">Balance</h6>
+    <span class="balance-icon"><i class="fa-solid fa-peso-sign"></i></span>
+    <h4 class="text-uppercase mt-2 balance" id="balance"><span>$ </span><span id="balance-amount">0</span></h4>
+   </div>
+  </div>
 
-     <div class="col-md-7 my-3">
-      <!-- expense list -->
-      <div class="expense-list" id="expense-list">
-       <div class="expense-list__info d-flex justify-content-between text-capitalize">
-        <h5 class="list-item">Expenses</h5>
-        <h5 class="list-item">Value</h5>
-        <h5 class="list-item"></h5>
-       </div>
-      </div>
-     </div>
-    </div>
+  <!-- Expense Form -->
+  <div class="expense-feedback alert alert-danger text-capitalize">expense feedback</div>
+  <form id="expense-form" class="expense-form mb-4">
+   <h5 class="text-capitalize">Expense Name</h5>
+   <div class="form-group">
+    <input type="text" class="form-control expense-input" id="expense-input">
+   </div>
+   <h5 class="text-capitalize mt-3">Amount</h5>
+   <div class="form-group">
+    <input type="number" class="form-control expense-input" id="amount-input">
+   </div>
+   <button type="submit" class="btn text-capitalize expense-submit mt-2" id="expense-submit">Add Expense</button>
+  </form>
 
-    <div class="row">
-     <div class="col-md-5 my-3 d-flex flex-column">
-      <!-- expense feedback -->
-      <div class="expense-feedback alert alert-danger text-capitalize">expense feedback</div>
-      <!-- expense form -->
-      <form id="expense-form" class="expense-form">
-       <h5>Expense Name</h5>
-       <div class="form-group">
-        <input type="text" class="form-control expense-input" id="expense-input">
-       </div>
-       <h5>Amount</h5>
-       <div class="form-group">
-        <input type="number" class="form-control expense-input" id="amount-input">
-       </div>
-       <br />
-       <!-- submit button -->
-       <button type="submit" class="btn text-capitalize expense-submit" id="expense-submit">add expense</button>
-      </form>
-     </div>
-
-     <!-- Canvas for the pie chart, placed beside the expense feedback -->
-     <div class="col-md-7 my-3">
-        <canvas id="expenseChart" class="small-chart" width="800" height="800"></canvas>
-     </div>
-    </div>
+  <!-- Expense List -->
+  <div class="expense-list" id="expense-list">
+   <div class="expense-list__info d-flex justify-content-between text-capitalize">
+    <h5 class="list-item">Expense Name</h5>
+    <h5 class="list-item">Amount</h5>
+    <h5 class="list-item">Edit/Delete</h5>
    </div>
   </div>
  </div>
 
- <script src="./chart.js"></script>
+ <!-- script js -->
  <script src="./app.js"></script>
 </body>
 
