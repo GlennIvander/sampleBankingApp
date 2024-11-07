@@ -13,8 +13,8 @@ function showSection(sectionId) {
 // Load initial data
 function loadInitialData() {
     const initialUsers = [
-        { name: 'Alice', email: 'alice@example.com', balance: 500, expenses: [] },
-        { name: 'Bob', email: 'bob@example.com', balance: 300, expenses: [] }
+        { name: 'Phoebe', email: 'phoebe@example.com', balance: 500, expenses: [] },
+        { name: 'Glenn', email: 'glenn@example.com', balance: 300, expenses: [] }
     ];
 
     initialUsers.forEach(initialUser => {

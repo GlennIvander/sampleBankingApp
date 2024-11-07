@@ -7,17 +7,35 @@
 }
 
 body {
-    background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+    width: 100%;
+    height: 100%;
+    background-color: #f7f8fa;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
+
 .budget-feedback, .expense-feedback {
     display: none;
 }
 
+.btn-primary{
+    background-color:#004e92;
+}
+
+.btn-primary:hover {
+    background-color: #003a6b;
+}
+
 .budget-form {
-    border: 0.15rem solid var(--mainGreen);
-    padding: 1rem;
-    border-radius: 0.25rem;
+    padding: 20px;
+    border-radius: 10px;
+    margin: auto;
+    width: 90%;
+    max-width: 600px;
     display: none;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 h3 {
@@ -32,9 +50,13 @@ h3 {
 }
 
 .expense-form {
-    border: 0.15rem solid var(--mainRed);
-    padding: 1rem;
-    border-radius: 0.25rem;
+    padding: 20px;
+    border-radius: 10px;
+    margin: auto;
+    width: 90%;
+    max-width: 600px;
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .budget-submit {
@@ -71,6 +93,21 @@ h3 {
     color: var(--mainRed);
 }
 
+.app-info {
+    gap: 80px;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+}
+
+.app-info-item {
+    flex: 1 1 auto;
+    min-width: 0;
+    text-align: center;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .edit-icon {
     color: var(--mainBlue);
     cursor: pointer;
@@ -98,7 +135,7 @@ h3 {
 }
 
 .info-title {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
 }
 
 .budget {
@@ -132,6 +169,19 @@ h3 {
     color: var(--mainDark);
 }
 
+.expense-list__info {
+    display: flex;
+    justify-content: space-between;
+    padding: 0px;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+    gap: 100px;
+}
+
+.expense-item {
+    height: 1.5rem;
+}
+
 @media screen and (min-width: 992px) {
   .budget {
     font-size: 2.6rem;
@@ -152,19 +202,4 @@ h3 {
     color: var(--mainBlue);
   }
 
-}
-
-.list-item {
-    flex: 0 0 33.33%;
-    text-align: center;
-}
-
-.expense-item {
-    height: 2rem;
-}
-
-.small-chart {
-    max-width: 250px;
-    max-height: 250px;
-    margin: 0 auto;
 }

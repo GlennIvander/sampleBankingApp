@@ -15,6 +15,23 @@ body, html {
   align-items: center;
 }
 
+#myBudget {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  padding: 10px 20px;
+  background-color: #007f92;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#myBudget:hover {
+  background-color: #015e6e;
+}
+
 /* General Layout */
 h1 {
   color: #004e92;
@@ -147,4 +164,3 @@ tr:hover {
       width: 100%;
   }
 }
-
